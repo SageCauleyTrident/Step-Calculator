@@ -40,13 +40,11 @@ window = tk.Tk()
 window.title("Distance Calculator")
 window.geometry("350x260")
 
-
 # Variables
 offset_var = tk.StringVar(value="0")
 goal_var = tk.StringVar()
 printer_end_offset_var = tk.StringVar()
 counts_var = tk.StringVar()
-
 
 # Inputs
 inputs = [
@@ -59,7 +57,6 @@ inputs = [
 for label_text, variable in inputs:
     tk.Label(window, text=label_text).pack()
     tk.Entry(window, textvariable=variable).pack()
-
 
 # Results
 result_label = tk.Label(window, text="Calibration Factor: --")
@@ -81,6 +78,5 @@ copy_status.pack()
 # Recalculate whenever an input changes
 for variable in (offset_var, goal_var, printer_end_offset_var, counts_var):
     variable.trace_add("write", calculate)
-
 
 window.mainloop()
