@@ -4,13 +4,13 @@ import tkinter as tk
 def calculate(*args):
     try:
         # Inputs
-        start_offset = float(offset_var.get())
-        original_goal = float(goal_var.get())
-        printer_distance = float(printer_distance_var.get())
+        printer_start_offset = float(offset_var.get())
+        move_distance = float(goal_var.get())
+        printer_end_offset = float(printer_end_offset_var.get())
 
         # Calculate
-        adjusted_goal = printer_distance - start_offset
-        difference = original_goal / adjusted_goal
+        adjusted_goal = printer_end_offset - printer_start_offset
+        difference = move_distance / adjusted_goal
 
         # Update labels
         result_label.config(
@@ -32,42 +32,38 @@ def calculate(*args):
 
     # If any errors, display NA
     except (ValueError, ZeroDivisionError):
-        result_label.config(text="Difference: NA")
-        final_label.config(text="Final: NA")
+        result_label.config(text="Calibration Factor: NA")
         count_label.config(text="New Counts Per Unit: NA")
 
 # Create Window
 window = tk.Tk()
 window.title("Distance Calculator")
-window.geometry("350x350")
+window.geometry("350x260")
 
 # Text holders
 goal_var = tk.StringVar()
 offset_var = tk.StringVar(value="0")
-printer_distance_var = tk.StringVar()
+printer_end_offset_var = tk.StringVar()
 counts_var = tk.StringVar()
 
 # Update whenever any input changes
 goal_var.trace_add("write", calculate)
 offset_var.trace_add("write", calculate)
-printer_distance_var.trace_add("write", calculate)
+printer_end_offset_var.trace_add("write", calculate)
 counts_var.trace_add("write", calculate)
 
 # Displays
-tk.Label(window, text="Start Offset:").pack()
+tk.Label(window, text="Printer Start Offset:").pack()
 tk.Entry(window, textvariable=offset_var).pack()
 
-tk.Label(window, text="Goal Distance:").pack()
+tk.Label(window, text="Move Distance:").pack()
 tk.Entry(window, textvariable=goal_var).pack()
 
-tk.Label(window, text="Printer Distance:").pack()
-tk.Entry(window, textvariable=printer_distance_var).pack()
+tk.Label(window, text="Printer End Offset:").pack()
+tk.Entry(window, textvariable=printer_end_offset_var).pack()
 
-result_label = tk.Label(window, text="Difference: --")
+result_label = tk.Label(window, text="Calibration Factor: --")
 result_label.pack(pady=5)
-
-final_label = tk.Label(window, text="Final: --")
-final_label.pack(pady=15)
 
 tk.Label(window, text="Current Counts Per Unit:").pack()
 tk.Entry(window, textvariable=counts_var).pack()
