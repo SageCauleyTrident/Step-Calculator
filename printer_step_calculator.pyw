@@ -6,33 +6,21 @@ def calculate(*args):
         # Inputs
         start_offset = float(offset_var.get())
         original_goal = float(goal_var.get())
-        current = float(current_var.get())
+        printer_distance = float(printer_distance_var.get())
 
         # Calculate
-        adjusted_goal = original_goal + start_offset
-        difference = adjusted_goal - current
-        goal_difference = difference + original_goal
-
-        # Check 0
-        if goal_difference == 0:
-            raise ZeroDivisionError
-
-        # Final Calculation
-        final_value = original_goal / goal_difference
+        adjusted_goal = printer_distance - start_offset
+        difference = original_goal / adjusted_goal
 
         # Update labels
         result_label.config(
             text=f"Difference: {difference:}"
         )
 
-        final_label.config(
-            text=f"Final: {final_value:}"
-        )
-
         # Only calculate counts if an input exists
         if counts_var.get().strip():
             counts_per_unit = float(counts_var.get())
-            final_count = final_value * counts_per_unit
+            final_count = difference * counts_per_unit
 
             count_label.config(
                 text=f"New Counts Per Unit: {final_count:}"
@@ -56,13 +44,13 @@ window.geometry("350x350")
 # Text holders
 goal_var = tk.StringVar()
 offset_var = tk.StringVar(value="0")
-current_var = tk.StringVar()
+printer_distance_var = tk.StringVar()
 counts_var = tk.StringVar()
 
 # Update whenever any input changes
 goal_var.trace_add("write", calculate)
 offset_var.trace_add("write", calculate)
-current_var.trace_add("write", calculate)
+printer_distance_var.trace_add("write", calculate)
 counts_var.trace_add("write", calculate)
 
 # Displays
@@ -72,8 +60,8 @@ tk.Entry(window, textvariable=offset_var).pack()
 tk.Label(window, text="Goal Distance:").pack()
 tk.Entry(window, textvariable=goal_var).pack()
 
-tk.Label(window, text="Current Distance:").pack()
-tk.Entry(window, textvariable=current_var).pack()
+tk.Label(window, text="Printer Distance:").pack()
+tk.Entry(window, textvariable=printer_distance_var).pack()
 
 result_label = tk.Label(window, text="Difference: --")
 result_label.pack(pady=5)
@@ -81,7 +69,7 @@ result_label.pack(pady=5)
 final_label = tk.Label(window, text="Final: --")
 final_label.pack(pady=15)
 
-tk.Label(window, text="Counts Per Unit:").pack()
+tk.Label(window, text="Current Counts Per Unit:").pack()
 tk.Entry(window, textvariable=counts_var).pack()
 
 # Copyable New Cycles
